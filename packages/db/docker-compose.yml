@@ -2,7 +2,7 @@ name: syncd-backend
 
 services:
   postgres:
-    image: postgres
+    image: postgres:18.1-alpine
     container_name: syncd-backend-postgres
     environment:
       POSTGRES_DB: syncd-backend

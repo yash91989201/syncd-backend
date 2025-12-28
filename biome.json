@@ -19,11 +19,33 @@
       "!**/.alchemy",
       "!**/.svelte-kit",
       "!**/wrangler.jsonc",
-      "!**/.source",
-      "!**/convex/_generated"
+      "!**/.source"
     ]
   },
-  "extends": [
-    "ultracite/core"
-  ]
+  "extends": ["ultracite/core"],
+  "linter": {
+    "rules": {
+      "complexity": {
+        "noForEach": "off"
+      },
+      "nursery": {
+        "noShadow": "off",
+        "noIncrementDecrement": "off",
+        "noLeakedRender": "off"
+      },
+      "style": {
+        "noMagicNumbers": "off",
+        "useBlockStatements": "off",
+        "useConsistentTypeDefinitions": "off"
+      },
+      "suspicious": {
+        "noConsole": "off"
+      },
+      "performance": {
+        "noNamespaceImport": "off",
+        "noBarrelFile": "off"
+      }
+    }
+  }
 }
+
