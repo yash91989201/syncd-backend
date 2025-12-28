@@ -1,0 +1,24 @@
+{
+  "name": "@syncd-backend/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@syncd-backend/config": "workspace:*"
+  },
+  "dependencies": {
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:",
+    "@syncd-backend/env": "workspace:*",
+    "@syncd-backend/db": "workspace:*"
+  }
+}
