@@ -14,11 +14,26 @@ export const OnboardingIsCompleteOutput = z.object({
 
 export const OnboardingCompleteInput = z
   .object({
-    userProfile: UserProfileInsertSchema.omit({ userId: true }),
-    healthCondition: HealthConditionInsertSchema.omit({ userId: true }),
-    cycleProfile: CycleProfileInsertSchema.omit({ userId: true }),
+    userProfile: UserProfileInsertSchema.omit({
+      userId: true,
+      createdAt: true,
+      updatedAt: true,
+    }),
+    healthCondition: HealthConditionInsertSchema.omit({
+      id: true,
+      userId: true,
+      createdAt: true,
+      updatedAt: true,
+    }),
+    cycleProfile: CycleProfileInsertSchema.omit({
+      userId: true,
+      createdAt: true,
+      updatedAt: true,
+    }),
     athleteProfile: AthleteProfileInsertSchema.omit({
       userId: true,
+      createdAt: true,
+      updatedAt: true,
     }).optional(),
   })
   .refine(
