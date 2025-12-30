@@ -3,7 +3,7 @@ import { relations } from "drizzle-orm";
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { user } from "./auth";
 
-export const healthConditionEnum = pgEnum("health_condition", [
+export const healthConditionEnum = pgEnum("health_condition_type", [
   "pcos",
   "thyroid",
   "endometriosis",
@@ -20,9 +20,7 @@ export const medicationTypeEnum = pgEnum("medication_type", [
 
 export const healthCondition = pgTable("health_condition", {
   id: cuid2("id").defaultRandom().primaryKey(),
-  userId: text("user_id")
-    .primaryKey()
-    .references(() => user.id, { onDelete: "cascade" }),
+  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
   condition: healthConditionEnum("condition").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),

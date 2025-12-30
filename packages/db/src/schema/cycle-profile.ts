@@ -22,6 +22,7 @@ export const flowIntensityEnum = pgEnum("flow_intensity", [
   "medium",
   "heavy",
   "very_heavy",
+  "variable",
 ]);
 
 export const painLevelEnum = pgEnum("pain_level", [

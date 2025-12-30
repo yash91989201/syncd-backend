@@ -1,9 +1,69 @@
 {
-  "id": "ba574888-1332-49fa-83b3-b466b2f15595",
+  "id": "1c277716-1a1f-4955-8719-22b393caaa1e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.athlete_profile": {
+      "name": "athlete_profile",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "training_frequency": {
+          "name": "training_frequency",
+          "type": "training_frequency",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sport": {
+          "name": "sport",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "athlete_profile_user_id_user_id_fk": {
+          "name": "athlete_profile_user_id_user_id_fk",
+          "tableFrom": "athlete_profile",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.account": {
       "name": "account",
       "schema": "",
@@ -178,6 +238,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "impersonated_by": {
+          "name": "impersonated_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -274,6 +340,31 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "banned": {
+          "name": "banned",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "ban_reason": {
+          "name": "ban_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ban_expires": {
+          "name": "ban_expires",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         },
         "phone_number": {
           "name": "phone_number",
@@ -377,9 +468,457 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
+    },
+    "public.cycle_profile": {
+      "name": "cycle_profile",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "cycle_length": {
+          "name": "cycle_length",
+          "type": "cycle_length",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bleeding_days": {
+          "name": "bleeding_days",
+          "type": "bleeding_days",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flow_intensity": {
+          "name": "flow_intensity",
+          "type": "flow_intensity",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pain_level": {
+          "name": "pain_level",
+          "type": "pain_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "cycle_profile_user_id_user_id_fk": {
+          "name": "cycle_profile_user_id_user_id_fk",
+          "tableFrom": "cycle_profile",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.daily_log": {
+      "name": "daily_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "pain_level": {
+          "name": "pain_level",
+          "type": "daily_pain_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "energy_level": {
+          "name": "energy_level",
+          "type": "daily_energy_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mood": {
+          "name": "mood",
+          "type": "daily_mood_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flow": {
+          "name": "flow",
+          "type": "daily_flow_intensity",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stress_level": {
+          "name": "stress_level",
+          "type": "daily_stress_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "daily_log_user_id_user_id_fk": {
+          "name": "daily_log_user_id_user_id_fk",
+          "tableFrom": "daily_log",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "daily_log_user_id_created_at_unique": {
+          "name": "daily_log_user_id_created_at_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id",
+            "created_at"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.health_condition": {
+      "name": "health_condition",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(24)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "condition": {
+          "name": "condition",
+          "type": "health_condition_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "health_condition_user_id_user_id_fk": {
+          "name": "health_condition_user_id_user_id_fk",
+          "tableFrom": "health_condition",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_profile": {
+      "name": "user_profile",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "age_group": {
+          "name": "age_group",
+          "type": "age_group",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cycle_stage": {
+          "name": "cycle_stage",
+          "type": "cycle_stage",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isAthlete": {
+          "name": "isAthlete",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_profile_user_id_user_id_fk": {
+          "name": "user_profile_user_id_user_id_fk",
+          "tableFrom": "user_profile",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.training_frequency": {
+      "name": "training_frequency",
+      "schema": "public",
+      "values": [
+        "1_2_per_week",
+        "3_4_per_week",
+        "5_plus_per_week"
+      ]
+    },
+    "public.bleeding_days": {
+      "name": "bleeding_days",
+      "schema": "public",
+      "values": [
+        "1_2",
+        "3_4",
+        "5_6",
+        "7_plus"
+      ]
+    },
+    "public.cycle_length": {
+      "name": "cycle_length",
+      "schema": "public",
+      "values": [
+        "21_24",
+        "25_28",
+        "29_32",
+        "33_plus",
+        "unknown"
+      ]
+    },
+    "public.flow_intensity": {
+      "name": "flow_intensity",
+      "schema": "public",
+      "values": [
+        "light",
+        "medium",
+        "heavy",
+        "very_heavy"
+      ]
+    },
+    "public.pain_level": {
+      "name": "pain_level",
+      "schema": "public",
+      "values": [
+        "none",
+        "mild",
+        "moderate",
+        "severe"
+      ]
+    },
+    "public.daily_flow_intensity": {
+      "name": "daily_flow_intensity",
+      "schema": "public",
+      "values": [
+        "light",
+        "medium",
+        "heavy",
+        "very_heavy"
+      ]
+    },
+    "public.daily_pain_level": {
+      "name": "daily_pain_level",
+      "schema": "public",
+      "values": [
+        "none",
+        "mild",
+        "moderate",
+        "severe"
+      ]
+    },
+    "public.daily_energy_level": {
+      "name": "daily_energy_level",
+      "schema": "public",
+      "values": [
+        "low",
+        "okay",
+        "good",
+        "high"
+      ]
+    },
+    "public.daily_mood_level": {
+      "name": "daily_mood_level",
+      "schema": "public",
+      "values": [
+        "low",
+        "neutral",
+        "good",
+        "great"
+      ]
+    },
+    "public.daily_stress_level": {
+      "name": "daily_stress_level",
+      "schema": "public",
+      "values": [
+        "low",
+        "moderate",
+        "high",
+        "very_high"
+      ]
+    },
+    "public.health_condition_type": {
+      "name": "health_condition_type",
+      "schema": "public",
+      "values": [
+        "pcos",
+        "thyroid",
+        "endometriosis",
+        "fibroids",
+        "anemia",
+        "diabetes"
+      ]
+    },
+    "public.medication_type": {
+      "name": "medication_type",
+      "schema": "public",
+      "values": [
+        "none",
+        "hormonal",
+        "other"
+      ]
+    },
+    "public.age_group": {
+      "name": "age_group",
+      "schema": "public",
+      "values": [
+        "under_18",
+        "18_24",
+        "25_34"
+      ]
+    },
+    "public.cycle_stage": {
+      "name": "cycle_stage",
+      "schema": "public",
+      "values": [
+        "regular",
+        "pregnant",
+        "postpartum",
+        "irregular",
+        "not_sure"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
