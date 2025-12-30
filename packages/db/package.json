@@ -26,10 +26,12 @@
     "@syncd-backend/config": "workspace:*"
   },
   "dependencies": {
-    "drizzle-orm": "^0.45.1",
-    "pg": "^8.16.3",
+    "@syncd-backend/env": "workspace:*",
     "dotenv": "catalog:",
-    "zod": "catalog:",
-    "@syncd-backend/env": "workspace:*"
+    "drizzle-cuid2": "^2.2.0",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
+    "pg": "^8.16.3",
+    "zod": "catalog:"
   }
 }

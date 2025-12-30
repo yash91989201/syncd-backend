@@ -1,5 +1,10 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { athleteProfile } from "./athlete-profile";
+import { cycleProfile } from "./cycle-profile";
+import { dailyLog } from "./daily-log";
+import { healthCondition } from "./health-info";
+import { userProfile } from "./user-profile";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -37,7 +42,7 @@ export const session = pgTable(
       .references(() => user.id, { onDelete: "cascade" }),
     impersonatedBy: text("impersonated_by"),
   },
-  (table) => [index("session_userId_idx").on(table.userId)],
+  (table) => [index("session_userId_idx").on(table.userId)]
 );
 
 export const account = pgTable(
@@ -61,7 +66,7 @@ export const account = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("account_userId_idx").on(table.userId)],
+  (table) => [index("account_userId_idx").on(table.userId)]
 );
 
 export const verification = pgTable(
@@ -77,12 +82,26 @@ export const verification = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("verification_identifier_idx").on(table.identifier)],
+  (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-export const userRelations = relations(user, ({ many }) => ({
+export const userRelations = relations(user, ({ one, many }) => ({
   sessions: many(session),
   accounts: many(account),
+  userProfile: one(userProfile, {
+    fields: [user.id],
+    references: [userProfile.userId],
+  }),
+  athleteProfile: one(athleteProfile, {
+    fields: [user.id],
+    references: [athleteProfile.userId],
+  }),
+  cycleProfile: one(cycleProfile, {
+    fields: [user.id],
+    references: [cycleProfile.userId],
+  }),
+  dailyLogs: many(dailyLog),
+  healthCondition: many(healthCondition),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
