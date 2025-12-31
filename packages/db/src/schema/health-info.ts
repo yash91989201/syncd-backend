@@ -15,7 +15,9 @@ export const healthConditionEnum = pgEnum("health_condition_type", [
 
 export const medicationTypeEnum = pgEnum("medication_type", [
   "none",
-  "hormonal",
+  "pill",
+  "iud",
+  "implant",
   "other",
 ]);
 
@@ -23,6 +25,7 @@ export const healthCondition = pgTable("health_condition", {
   id: cuid2("id").defaultRandom().primaryKey(),
   userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
   condition: healthConditionEnum("condition").notNull(),
+  medication: medicationTypeEnum("medication").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

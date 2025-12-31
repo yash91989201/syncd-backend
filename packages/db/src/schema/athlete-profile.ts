@@ -5,7 +5,9 @@ import { user } from "./auth";
 export const trainingFrequencyEnum = pgEnum("training_frequency", [
   "1_2_per_week",
   "3_4_per_week",
-  "5_plus_per_week",
+  "5_6_per_week",
+  "daily",
+  "twice_daily",
 ]);
 
 export const athleteProfile = pgTable("athlete_profile", {

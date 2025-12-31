@@ -6,10 +6,19 @@ export const ageGroupEnum = pgEnum("age_group", ["under_18", "18_24", "25_34"]);
 
 export const cycleStageEnum = pgEnum("cycle_stage", [
   "regular",
-  "pregnant",
-  "postpartum",
   "irregular",
-  "not_sure",
+  "pregnant",
+  "trying_to_conceive",
+  "perimenopause",
+  "postpartum",
+]);
+
+export const physicalActivityEnum = pgEnum("physical_activity_level", [
+  "daily_running",
+  "gym_fitness",
+  "walking",
+  "yoga",
+  "none",
 ]);
 
 export const userProfile = pgTable("user_profile", {
@@ -19,6 +28,7 @@ export const userProfile = pgTable("user_profile", {
   ageGroup: ageGroupEnum("age_group").notNull(),
   cycleStage: cycleStageEnum("cycle_stage").notNull(),
   isAthlete: boolean().default(false).notNull(),
+  physicalActivity: physicalActivityEnum("physical_activity"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
