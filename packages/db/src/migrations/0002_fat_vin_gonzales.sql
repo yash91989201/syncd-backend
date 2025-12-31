@@ -1,0 +1,1 @@
+ALTER TYPE "public"."health_condition_type" ADD VALUE 'none' BEFORE 'pcos';

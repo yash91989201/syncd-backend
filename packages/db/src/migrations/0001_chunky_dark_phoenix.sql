@@ -1,0 +1,1 @@
+ALTER TYPE "public"."flow_intensity" ADD VALUE 'variable';

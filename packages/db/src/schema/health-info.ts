@@ -4,6 +4,7 @@ import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { user } from "./auth";
 
 export const healthConditionEnum = pgEnum("health_condition_type", [
+  "none",
   "pcos",
   "thyroid",
   "endometriosis",
