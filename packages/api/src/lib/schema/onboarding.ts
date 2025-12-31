@@ -34,7 +34,7 @@ export const OnboardingCompleteInput = z
       userId: true,
       createdAt: true,
       updatedAt: true,
-    }).optional(),
+    }).nullable(),
   })
   .refine(
     (data) => {
