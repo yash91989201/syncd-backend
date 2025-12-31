@@ -68,33 +68,29 @@ export const onboardingRouter = {
       const userId = session.user.id;
 
       try {
-        await db.insert(userProfile).values({
-          userId,
-          ageGroup: input.userProfile.ageGroup,
-          cycleStage: input.userProfile.cycleStage,
-          isAthlete: input.userProfile.isAthlete,
-        });
-
-        await db.insert(healthCondition).values({
-          userId,
-          condition: input.healthCondition.condition,
-        });
-
-        await db.insert(cycleProfile).values({
-          userId,
-          cycleLength: input.cycleProfile.cycleLength,
-          bleedingDays: input.cycleProfile.bleedingDays,
-          flowIntensity: input.cycleProfile.flowIntensity,
-          painLevel: input.cycleProfile.painLevel,
-        });
-
-        if (input.userProfile.isAthlete && input.athleteProfile) {
-          await db.insert(athleteProfile).values({
+        await db.transaction(async (tx) => {
+          await tx.insert(userProfile).values({
             userId,
-            trainingFrequency: input.athleteProfile.trainingFrequency,
-            sport: input.athleteProfile.sport,
+            ...input.userProfile,
           });
-        }
+
+          await tx.insert(healthCondition).values({
+            userId,
+            ...input.healthCondition,
+          });
+
+          await tx.insert(cycleProfile).values({
+            userId,
+            ...input.cycleProfile,
+          });
+
+          if (input.userProfile.isAthlete && input.athleteProfile) {
+            await tx.insert(athleteProfile).values({
+              userId,
+              ...input.athleteProfile,
+            });
+          }
+        });
 
         return { success: true };
       } catch (error) {
