@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { date, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { user } from "./auth";
 
 export const cycleLengthEnum = pgEnum("cycle_length", [
@@ -37,6 +37,7 @@ export const cycleProfile = pgTable("cycle_profile", {
     .primaryKey()
     .references(() => user.id, { onDelete: "cascade" }),
   cycleLength: cycleLengthEnum("cycle_length"),
+  lastPeriod: date("last_period", { mode: "string" }).notNull(),
   bleedingDays: bleedingDaysEnum("bleeding_days"),
   flowIntensity: flowIntensityEnum("flow_intensity"),
   painLevel: painLevelEnum("pain_level"),

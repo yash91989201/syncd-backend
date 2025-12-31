@@ -29,6 +29,7 @@ export const dailyFlowIntensityEnum = pgEnum("daily_flow_intensity", [
   "medium",
   "heavy",
   "very_heavy",
+  "variable",
 ]);
 
 export const stressLevelEnum = pgEnum("daily_stress_level", [
