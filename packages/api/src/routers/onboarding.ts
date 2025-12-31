@@ -1,6 +1,7 @@
 import {
   athleteProfile,
   cycleProfile,
+  dailyLog,
   healthCondition,
   userProfile,
 } from "@syncd-backend/db/schema/index";
@@ -90,6 +91,21 @@ export const onboardingRouter = {
               ...input.athleteProfile,
             });
           }
+
+          const flowValue =
+            input.cycleProfile.flowIntensity === "variable"
+              ? null
+              : input.cycleProfile.flowIntensity;
+
+          await tx.insert(dailyLog).values({
+            userId,
+            painLevel: input.cycleProfile.painLevel ?? "none",
+            flow: flowValue,
+            energyLevel: null,
+            mood: null,
+            stressLevel: null,
+            note: null,
+          });
         });
 
         return { success: true };
