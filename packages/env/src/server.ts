@@ -17,6 +17,7 @@ export const env = createEnv({
     TWILIO_ACCOUNT_SID: z.string(),
     TWILIO_AUTH_TOKEN: z.string(),
     TWILIO_VERIFY_SERVICE_SID: z.string(),
+    PORT: z.string().transform((val) => Number.parseInt(val, 10)),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
