@@ -15,10 +15,12 @@
     "@syncd-backend/config": "workspace:*"
   },
   "dependencies": {
+    "@syncd-backend/db": "workspace:*",
+    "@syncd-backend/env": "workspace:*",
+    "@types/twilio": "^3.19.3",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
-    "zod": "catalog:",
-    "@syncd-backend/env": "workspace:*",
-    "@syncd-backend/db": "workspace:*"
+    "twilio": "^5.11.1",
+    "zod": "catalog:"
   }
 }

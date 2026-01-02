@@ -14,6 +14,9 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "production", "test"])
       .default("development"),
+    TWILIO_ACCOUNT_SID: z.string(),
+    TWILIO_AUTH_TOKEN: z.string(),
+    TWILIO_VERIFY_SERVICE_SID: z.string(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
