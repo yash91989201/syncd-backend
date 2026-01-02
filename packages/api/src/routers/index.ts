@@ -4,6 +4,7 @@ import { protectedProcedure, publicProcedure } from "../index";
 import { cycleRouter } from "./cycle";
 import { dailyLogRouter } from "./daily-log";
 import { onboardingRouter } from "./onboarding";
+import { userProfileRouter } from "./user-profile";
 
 export const appRouter = {
   healthCheck: publicProcedure.handler(() => {
@@ -18,6 +19,7 @@ export const appRouter = {
   onboarding: onboardingRouter,
   dailyLog: dailyLogRouter,
   cycle: cycleRouter,
+  userProfile: userProfileRouter,
 };
 
 export type AppRouter = typeof appRouter;
