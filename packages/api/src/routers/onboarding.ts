@@ -5,7 +5,7 @@ import {
   healthCondition,
   userProfile,
 } from "@syncd-backend/db/schema/index";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { protectedProcedure } from "../index";
 import {
   OnboardingCompleteInput,
