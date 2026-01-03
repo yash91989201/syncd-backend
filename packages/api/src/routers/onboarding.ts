@@ -10,8 +10,12 @@ import { protectedProcedure } from "../index";
 import {
   OnboardingCompleteInput,
   OnboardingCompleteOutput,
+  OnboardingGetInput,
+  OnboardingGetOutput,
   OnboardingIsCompleteInput,
   OnboardingIsCompleteOutput,
+  OnboardingUpdateInput,
+  OnboardingUpdateOutput,
 } from "../lib/schema/onboarding";
 
 export const onboardingRouter = {
@@ -113,5 +117,107 @@ export const onboardingRouter = {
         console.error("Error completing onboarding:", error);
         return { success: false };
       }
+    }),
+
+  update: protectedProcedure
+    .input(OnboardingUpdateInput)
+    .output(OnboardingUpdateOutput)
+    .handler(async ({ context: { session, db }, input }) => {
+      const userId = session.user.id;
+
+      try {
+        await db.transaction(async (tx) => {
+          if (input.userProfile) {
+            await tx
+              .update(userProfile)
+              .set({
+                ...input.userProfile,
+                updatedAt: new Date(),
+              })
+              .where(eq(userProfile.userId, userId));
+          }
+
+          if (input.healthCondition) {
+            await tx
+              .update(healthCondition)
+              .set({
+                ...input.healthCondition,
+                updatedAt: new Date(),
+              })
+              .where(eq(healthCondition.userId, userId));
+          }
+
+          if (input.cycleProfile) {
+            await tx
+              .update(cycleProfile)
+              .set({
+                ...input.cycleProfile,
+                updatedAt: new Date(),
+              })
+              .where(eq(cycleProfile.userId, userId));
+          }
+
+          if (input.athleteProfile) {
+            const existingAthleteProfile =
+              await tx.query.athleteProfile.findFirst({
+                where: eq(athleteProfile.userId, userId),
+              });
+
+            if (existingAthleteProfile) {
+              await tx
+                .update(athleteProfile)
+                .set({
+                  ...input.athleteProfile,
+                  updatedAt: new Date(),
+                })
+                .where(eq(athleteProfile.userId, userId));
+            } else if (
+              input.athleteProfile.sport !== undefined &&
+              input.athleteProfile.sport !== null
+            ) {
+              await tx.insert(athleteProfile).values({
+                userId,
+                sport: input.athleteProfile.sport,
+                trainingFrequency: input.athleteProfile.trainingFrequency,
+              });
+            }
+          }
+        });
+
+        return { success: true };
+      } catch (error) {
+        console.error("Error updating onboarding:", error);
+        return { success: false };
+      }
+    }),
+
+  get: protectedProcedure
+    .input(OnboardingGetInput)
+    .output(OnboardingGetOutput)
+    .handler(async ({ context: { session, db } }) => {
+      const userId = session.user.id;
+
+      const userProfileData = await db.query.userProfile.findFirst({
+        where: eq(userProfile.userId, userId),
+      });
+
+      const healthConditionData = await db.query.healthCondition.findFirst({
+        where: eq(healthCondition.userId, userId),
+      });
+
+      const cycleProfileData = await db.query.cycleProfile.findFirst({
+        where: eq(cycleProfile.userId, userId),
+      });
+
+      const athleteProfileData = await db.query.athleteProfile.findFirst({
+        where: eq(athleteProfile.userId, userId),
+      });
+
+      return {
+        userProfile: userProfileData ?? null,
+        healthCondition: healthConditionData ?? null,
+        cycleProfile: cycleProfileData ?? null,
+        athleteProfile: athleteProfileData ?? null,
+      };
     }),
 };
