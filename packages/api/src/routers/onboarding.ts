@@ -5,7 +5,7 @@ import {
   healthCondition,
   userProfile,
 } from "@syncd-backend/db/schema/index";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { protectedProcedure } from "../index";
 import {
   OnboardingCompleteInput,
@@ -128,6 +128,11 @@ export const onboardingRouter = {
       try {
         await db.transaction(async (tx) => {
           if (input.userProfile) {
+            // Get current user profile to check if isAthlete is being changed
+            const currentUserProfile = await tx.query.userProfile.findFirst({
+              where: eq(userProfile.userId, userId),
+            });
+
             await tx
               .update(userProfile)
               .set({
@@ -135,6 +140,16 @@ export const onboardingRouter = {
                 updatedAt: new Date(),
               })
               .where(eq(userProfile.userId, userId));
+
+            // If isAthlete is being changed from true to false, delete athleteProfile
+            if (
+              currentUserProfile?.isAthlete === true &&
+              input.userProfile.isAthlete === false
+            ) {
+              await tx
+                .delete(athleteProfile)
+                .where(eq(athleteProfile.userId, userId));
+            }
           }
 
           if (input.healthCondition) {
