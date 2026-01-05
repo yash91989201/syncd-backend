@@ -1,6 +1,7 @@
 import type { RouterClient } from "@orpc/server";
 
 import { protectedProcedure, publicProcedure } from "../index";
+import { accountRouter } from "./account";
 import { cycleRouter } from "./cycle";
 import { dailyLogRouter } from "./daily-log";
 import { onboardingRouter } from "./onboarding";
@@ -20,6 +21,7 @@ export const appRouter = {
   dailyLog: dailyLogRouter,
   cycle: cycleRouter,
   userProfile: userProfileRouter,
+  account: accountRouter,
 };
 
 export type AppRouter = typeof appRouter;
